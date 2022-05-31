@@ -3,7 +3,6 @@ import Navbar from "src/commons/components/Navbar/index";
 import Layout from "src/commons/components/Layout";
 import styles from "src/commons/styles/Product.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import Image from "next/image";
 import Typography from "@mui/material/Typography";
 import { formatRupiah } from "src/helpers";
@@ -137,6 +136,7 @@ const Product = () => {
               <IconButton
                 className={styles.cart}
                 color="success"
+                disabled={result.stock == 0}
                 onClick={() => {
                   handleClick();
                   AddItemToChart();

@@ -2,12 +2,7 @@ import * as React from "react";
 import Navbar from "src/commons/components/Navbar/index";
 import Layout from "src/commons/components/Layout";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import Image from "next/image";
-import Typography from "@mui/material/Typography";
-import { formatRupiah } from "src/helpers";
-import { IconButton } from "@mui/material";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { useState } from "react";
@@ -16,7 +11,6 @@ import { setCart } from "src/redux/actions/product";
 import Stack from "@mui/material/Stack";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import Link from "next/link";
 import styles from "src/commons/styles/Edit.module.css";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -44,13 +38,12 @@ const EditProduct = () => {
   const prodIdx = productList.findIndex((e) => e.id == id);
   const cartIdx = cartList.findIndex((e) => e.id == id);
 
-  const [stock, SetStock] = useState(result.stock);
+  const [stock, SetStock] = useState(result ? result.stock : 0);
   const [open, setOpen] = React.useState(false);
-  const [name, setName] = useState(result.name);
-  const [price, setPrice] = useState(result.price);
-  const [desc, setDesc] = useState(result.desc);
-  const [newStock, setNewStock] = useState(result.stock);
-  const [img, setImg] = useState(result.img);
+  const [name, setName] = useState(result ? result.name : "");
+  const [price, setPrice] = useState(result ? result.price : 0);
+  const [desc, setDesc] = useState(result ? result.desc : "");
+  const [img, setImg] = useState(result ? result.img : null);
 
   const plusCount = () => {
     SetStock(stock + 1);
@@ -86,14 +79,13 @@ const EditProduct = () => {
   };
 
   const DelProduct = () => {
-    if (prodIdx !== -1 && cartIdx !== -1) {
+    if (prodIdx !== -1 || cartIdx !== -1) {
       productList.splice(prodIdx, 1);
       cartList.splice(cartIdx, 1);
     }
     dispatch(setCart(cartList));
     dispatch(setProduct(productList));
-    router.push("/");
-    return;
+    return router.push("/");
   };
 
   const HandleClose = (event, reason) => {
@@ -231,7 +223,6 @@ const EditProduct = () => {
             <Button
               color="error"
               onClick={() => {
-                // handleClose();
                 DelProduct();
               }}
             >
